@@ -1,9 +1,5 @@
 ## BASE
-FROM ubuntu:20.04
-WORKDIR /root
-RUN apt update -y && \
-    apt install -y vim
-COPY ./vimrc $HOME/.vimrc
+FROM somidi/base:v1
 
 # ROS LOCALES 
 RUN apt update -y && \
@@ -18,13 +14,9 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key  -o
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
 ## ROS PACKAGES
-ARG DEBIAN_FRONTEND=noninteractive
-ENV TZ=Indian/Maldives
 RUN apt update && apt install -y \
                       build-essential \
-                      gcc \
                       cmake \
-                      git \
                       pip \
                       python3-colcon-common-extensions \
                       python3-flake8 \
@@ -32,8 +24,7 @@ RUN apt update && apt install -y \
                       python3-pytest-cov \
                       python3-rosdep \
                       python3-setuptools \
-                      python3-vcstool \
-                      wget
+                      python3-vcstool
 # install some pip packages needed for testing
 RUN python3 -m pip install -U \
                       flake8-blind-except \
